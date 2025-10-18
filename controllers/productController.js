@@ -43,6 +43,7 @@ export async function getAllproducts(req, res){
 			// 	});
 
 			// Using async-await
+            //
 
 			const products = await Product.find();
 		} else {
