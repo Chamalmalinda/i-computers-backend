@@ -52,13 +52,14 @@ export function loginUser(req, res) {
                     image:user.image
                   };
 
-                  const token =jwt.sign(payload,"secretkey96$2025", {
+                  const token =jwt.sign(payload,process.env.JWT_SECRET, {
                     expiresIn:"150h"
                   })
 
                   res.json({
                     message:"Login successfull",
-                    token: token
+                    token: token,
+                    role:user.role,
                   });
                     
                 }else {
