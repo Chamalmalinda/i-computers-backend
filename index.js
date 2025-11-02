@@ -10,11 +10,13 @@ dotenv.config()
 
 const mongoURI = process.env.MONGO_URL
 
-mongoose .connect (mongoURI).then(
-    ()=>{
-        console.log("connected to mongoDB cluster")
-    }
-)
+mongoose.connect(mongoURI)
+    .then(() => {
+        console.log("Connected to MongoDB cluster");
+    })
+    .catch((e) => {
+        console.log(e);
+    });
 
 const app = express()
 
@@ -31,7 +33,7 @@ app.use(
 
             const token = authorizationheader.replace("Bearer ","")
 
-            console.log(token)
+
 
             jwt.verify(token, process.env.JWT_SECRET,
                 (error,content)=>{
@@ -40,7 +42,7 @@ app.use(
 
                         console.log("invalid token")
 
-                        res.json({
+                        res.status(401).json({
                             message: "Inalid token"
                         })
                     }else{

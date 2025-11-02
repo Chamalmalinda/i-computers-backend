@@ -1,6 +1,8 @@
 import User from "../models/User.js";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import dotenv from "dotenv";
+dotenv.config();
 
 export function createUser(req, res) {
 
@@ -49,7 +51,7 @@ export function loginUser(req, res) {
                     lastName:user.lastName,
                     role:user.role,
                     isEmailVerified:user.isEmailverified,
-                    image:user.image
+                    image:user.Image
                   };
 
                   const token =jwt.sign(payload,process.env.JWT_SECRET, {
