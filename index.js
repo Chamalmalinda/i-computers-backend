@@ -43,7 +43,7 @@ app.use(
                         console.log("invalid token")
 
                         res.status(401).json({
-                            message: "Inalid token"
+                            message: "Invalid token"
                         })
                     }else{
                     
