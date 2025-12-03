@@ -1,5 +1,5 @@
 import express from "express"
-import { createProduct, deleteProduct, getAllproducts, getproductByID, updateProduct } from "../controllers/productController.js"
+import { createProduct, deleteProduct, getAllproducts, getproductByID, searchProducts, updateProduct } from "../controllers/productController.js"
 
 const productRouter = express.Router()
 
@@ -12,6 +12,8 @@ productRouter.get("/trnding",(req, res)=>{
 })
 
 productRouter.post("/",createProduct)
+
+productRouter.get("/search/:query", searchProducts)
 
 productRouter.get("/:productID", getproductByID)
 
