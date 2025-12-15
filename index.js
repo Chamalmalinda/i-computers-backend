@@ -33,6 +33,10 @@ app.use(cors({
 
 app.use(express.json())
 
+// Public routes - NO JWT verification needed
+app.use("/api/users", userRouter)
+
+// JWT Middleware - applies to other routes
 app.use(
     (req,res,next)=>{
         
@@ -68,9 +72,6 @@ app.use(
 
     }
 )
-
-
-app.use("/api/users",userRouter)
 app.use("/api/products",productRouter)
 app.use("/api/orders",orderRouter)
 
