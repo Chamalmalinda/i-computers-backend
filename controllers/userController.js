@@ -19,42 +19,23 @@ const transporter = nodemailer.createTransport({
 })
 
 
-export async function createUser(req, res) {
-	try {
-		const data = req.body;
+export function createUser(req, res) {
+	const data = req.body;
 
-		// Check if user already exists
-		const existingUser = await User.findOne({ email: data.email });
-		if (existingUser) {
-			return res.status(409).json({
-				message: "Email already registered. Please use a different email or try logging in."
-			});
-		}
+	const hashedPassword = bcrypt.hashSync(data.password, 10);
 
-		const hashedPassword = bcrypt.hashSync(data.password, 10);
+	const user = new User({
+		email: data.email,
+		firstName: data.firstName,
+		lastName: data.lastName,
+		password: hashedPassword,
+	});
 
-		const user = new User({
-			email: data.email,
-			firstName: data.firstName,
-			lastName: data.lastName,
-			password: hashedPassword,
-		});
-
-		await user.save();
+	user.save().then(() => {
 		res.json({
 			message: "User created successfully",
 		});
-	} catch (error) {
-		if (error.code === 11000) {
-			return res.status(409).json({
-				message: "Email already registered. Please use a different email or try logging in."
-			});
-		}
-		res.status(500).json({
-			message: "Error creating user",
-			error: error.message
-		});
-	}
+	});
 }
 
 export function loginUser(req, res) {
@@ -168,7 +149,7 @@ export async function googleLogin(req, res) {
 			res.json({
 				message: "Login successful",
 				token: token,
-				role: newUser.role,
+				role: user.role,
 			});
 
 		} else {
@@ -214,7 +195,7 @@ export async function validateOTPandUpdatePassword(req,res){
 
     const otpRecord = await Otp.findOne({email :email, otp:otp});
     if(otpRecord == null){
-        res.status(400).json({
+        res.json(400).json({
             message :"Invalid OTP",
 
         });
@@ -234,7 +215,7 @@ export async function validateOTPandUpdatePassword(req,res){
 }catch(error) {
     res.status(500).json({
         message:"Failed to update password",
-        error: error.message
+        error: err.message
     });
 }
 
@@ -293,7 +274,7 @@ export async function sendOTP(req,res){
 }catch(error){
     res.status(500).json({
         message :"Failed to send OTP",
-        error : error.message
+        error : err.message
     })
 }
 
@@ -353,3 +334,5 @@ export async function updateUserStatus(req, res) {
 		});
 	}
 }
+
+//add try catch for async-await
