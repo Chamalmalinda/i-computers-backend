@@ -30,9 +30,6 @@ app.use(cors())
 app.use(express.json())
 
 
-app.use("/api/users",userRouter)
-
-
 app.use(
     (req,res,next)=>{
 
@@ -45,12 +42,11 @@ app.use(
             jwt.verify(token, process.env.JWT_SECRET,
                 (error, content)=>{
 
-                    if(error || content == null){
+                    if(content == null){
 
                         res.status(401).json({
                             message : "invalid token"
                         })
-                        return
 
                     }else{
                         
@@ -68,6 +64,8 @@ app.use(
 )
 
 
+
+app.use("/api/users",userRouter)
 app.use("/api/products",productRouter)
 app.use("/api/orders",orderRouter)
 
