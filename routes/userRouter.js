@@ -4,14 +4,21 @@ import { createUser, getAllUsers, getUser, googleLogin, loginUser, sendOTP, upda
 
 const userRouter = express.Router()
 
+// POST routes
 userRouter.post("/",createUser)
 userRouter.post("/login",loginUser)
-userRouter.get("/", getUser)
 userRouter.post("/google-login", googleLogin)
-userRouter.get("/send-otp/:email", sendOTP)
 userRouter.post("/validate-otp",validateOTPandUpdatePassword)
+
+// GET routes with parameters FIRST
+userRouter.get("/send-otp/:email", sendOTP)
 userRouter.get("/all", getAllUsers)
+
+// PUT routes
 userRouter.put("/toggle-block/:email", updateUserStatus)
+
+// GET "/" route LAST - catch all authenticated requests
+userRouter.get("/", getUser)
 
 
 export default userRouter
